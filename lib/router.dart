@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
-import 'package:pressdasi/app/modules/home/view.dart';
 
 //screens
 import './app/modules/siswa/view.dart';
 import './app/modules/guru/view.dart';
+import './app/modules/home/view.dart';
+import './app/modules/qr/view.dart';
 
 class AppRoutes {
   static final routes = [
@@ -21,5 +22,10 @@ class AppRoutes {
       page: () => const PageSiswa(),
       transition: Transition.cupertino,
     ),
+    GetPage(
+      name: "/qrgen",
+      page: () => const QrGenerate(),
+      transition: Transition.cupertino,
+    )
   ];
 }

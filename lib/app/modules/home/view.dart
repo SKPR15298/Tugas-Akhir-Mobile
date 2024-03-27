@@ -163,6 +163,14 @@ class Verification extends StatelessWidget {
                         controller: textFieldController,
                         style: const TextStyle(color: textColor),
                         autofocus: true,
+                        textInputAction: TextInputAction.go,
+                        onSubmitted: (value) {
+                          if (value.trim().toUpperCase() == "G") {
+                            Get.offAllNamed('/guru');
+                          } else if (value.trim().toUpperCase() == "S") {
+                            Get.offAllNamed('/siswa');
+                          }
+                        },
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
                             Icons.account_circle_outlined,
@@ -203,9 +211,10 @@ class Verification extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (textFieldController.text == "G") {
+                          if (textFieldController.text.toUpperCase() == "G") {
                             Get.offAllNamed('/guru');
-                          } else if (textFieldController.text == "S") {
+                          } else if (textFieldController.text.toUpperCase() ==
+                              "S") {
                             Get.offAllNamed('/siswa');
                           }
                         },
