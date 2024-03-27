@@ -17,7 +17,7 @@ class PageMain extends StatelessWidget {
           ),
           child: Column(
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+              SizedBox(height: Get.height * 0.1),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
@@ -47,9 +47,9 @@ class PageMain extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.08),
+              SizedBox(height: Get.height * 0.08),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.4,
+                height: Get.height * 0.4,
                 child: Image.asset(
                   'assets/inorasiicon.png',
                   fit: BoxFit.contain,
@@ -70,127 +70,7 @@ class PageMain extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     Get.bottomSheet(
-                      Container(
-                        decoration: const BoxDecoration(
-                          color: backgroundColor,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Center(
-                                child: Container(
-                                  width: 40,
-                                  margin: const EdgeInsets.only(bottom: 10),
-                                  decoration: BoxDecoration(
-                                    color: greyColor,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  height: 4,
-                                ),
-                              ),
-                              const Center(
-                                child: Text(
-                                  'Masukkan kode identifikasi',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              const Divider(),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(15),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.transparent,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: const TextField(
-                                          style: TextStyle(color: textColor),
-                                          autofocus: true,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(
-                                              Icons.account_circle_outlined,
-                                              color: Colors.black54,
-                                            ),
-                                            hintText: 'Nomor Identifikasi',
-                                            hintStyle: TextStyle(
-                                              color: greyColor,
-                                              fontSize: 14,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)),
-                                              borderSide: BorderSide(
-                                                color: textColor,
-                                              ),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)),
-                                              borderSide: BorderSide(
-                                                color: blueColor,
-                                              ),
-                                            ),
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                              horizontal: 20,
-                                              vertical: 10,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 15,
-                                        vertical: 10,
-                                      ),
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: ElevatedButton(
-                                          onPressed: () {},
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            backgroundColor: blueColor,
-                                          ),
-                                          child: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 15),
-                                            child: Text(
-                                              'Lanjut',
-                                              style: TextStyle(
-                                                color: backgroundColor,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      const Verification(),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -209,6 +89,7 @@ class PageMain extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 5),
               const Text(
                 'Pastikan sudah memiliki akun',
                 style: TextStyle(
@@ -219,6 +100,139 @@ class PageMain extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class Verification extends StatelessWidget {
+  const Verification({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController textFieldController = TextEditingController();
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                margin: const EdgeInsets.only(bottom: 10),
+                decoration: BoxDecoration(
+                  color: greyColor,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                height: 4,
+              ),
+            ),
+            const Center(
+              child: Text(
+                'Masukkan kode identifikasi',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Divider(),
+            Expanded(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextField(
+                        controller: textFieldController,
+                        style: const TextStyle(color: textColor),
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.account_circle_outlined,
+                            color: Colors.black54,
+                          ),
+                          hintText: 'Nomor Identifikasi',
+                          hintStyle: TextStyle(
+                            color: greyColor,
+                            fontSize: 14,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(
+                              color: textColor,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            borderSide: BorderSide(
+                              color: blueColor,
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 10,
+                    ),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (textFieldController.text == "G") {
+                            Get.offAllNamed('/guru');
+                          } else if (textFieldController.text == "S") {
+                            Get.offAllNamed('/siswa');
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          backgroundColor: blueColor,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                          child: Text(
+                            'Lanjut',
+                            style: TextStyle(
+                              color: backgroundColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
