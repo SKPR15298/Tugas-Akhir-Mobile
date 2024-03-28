@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
 import '../../../core/colors.dart';
 
+enum Status { lengkap, kurang, kosong }
+
 class GuruCard extends StatelessWidget {
-  const GuruCard({super.key});
+  final Status status;
+  const GuruCard({super.key, this.status = Status.kosong});
 
   @override
   Widget build(BuildContext context) {
+    late String statusText;
+    late Color statusColor;
+
+    switch (status) {
+      case Status.lengkap:
+        statusText = "Lengkap";
+        statusColor = greenColor;
+        break;
+      case Status.kurang:
+        statusText = "Kurang";
+        statusColor = orangeColor;
+        break;
+      case Status.kosong:
+        statusText = "Kosong";
+        statusColor = redColor;
+        break;
+    }
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -19,12 +39,12 @@ class GuruCard extends StatelessWidget {
           ),
         ],
       ),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(
+            const Flexible(
               child: Text(
                 "Sheva Kurnia Pratama Rachman",
                 style: TextStyle(
@@ -34,11 +54,11 @@ class GuruCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Text(
-              "Lengkap",
+              statusText,
               style: TextStyle(
-                color: greenColor,
+                color: statusColor,
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),

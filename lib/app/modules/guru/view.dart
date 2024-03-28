@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../core/components/appbar.dart';
+import '../../core/components/drawer.dart';
 import './components/card.dart';
 
 class PageGuru extends StatelessWidget {
@@ -11,7 +12,11 @@ class PageGuru extends StatelessWidget {
     final now = DateTime.now();
 
     return Scaffold(
-      appBar: const CustomAppBar(title: "Ruang Kelas", tailing: true),
+      appBar: const CustomAppBar(
+        title: "Ruang Kelas",
+        tailing: true,
+      ),
+      endDrawer: const Sidebar(),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -78,7 +83,7 @@ class PageGuru extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return const Padding(
                       padding: EdgeInsets.only(bottom: 20),
-                      child: GuruCard(),
+                      child: GuruCard(status: Status.lengkap),
                     );
                   },
                 ),

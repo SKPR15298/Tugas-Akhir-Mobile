@@ -7,7 +7,8 @@ const blueColor = Color(0xFF7FA4EC);
 const blueDarkColor = Color(0xFF4892DA);
 const greenColor = Color(0xFF3BC718);
 const greyColor = Color(0xFFADADAD);
-const orangeColor = Color(0xFFC7A565);
+const orangeColor = Color(0xFFD97518);
+const redColor = Color(0xFFCA1414);
 const backgroundGradient = LinearGradient(
   begin: Alignment.topCenter,
   end: Alignment.bottomCenter,

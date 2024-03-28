@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pressdasi/app/core/colors.dart';
+import 'package:get/get.dart';
+import '../colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -17,13 +18,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: blueDarkColor,
+      automaticallyImplyLeading: false,
       leading: leading
           ? IconButton(
               icon: const Icon(Icons.chevron_left_rounded),
               color: backgroundColor,
               iconSize: 30,
               onPressed: () {
-                Navigator.pop(context);
+                Get.back();
               },
             )
           : null,
@@ -38,7 +40,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               IconButton(
                 icon: const Icon(Icons.more_vert_outlined),
                 color: backgroundColor,
-                onPressed: () {},
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
               ),
             ]
           : null,

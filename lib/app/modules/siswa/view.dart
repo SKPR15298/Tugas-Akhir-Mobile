@@ -4,6 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/colors.dart';
 import './components/card.dart';
+import '../../core/components/drawer.dart';
 import '../../core/components/appbar.dart';
 
 class PageSiswa extends StatelessWidget {
@@ -13,6 +14,7 @@ class PageSiswa extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(title: "Siswa", tailing: true),
+      endDrawer: const Sidebar(),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -107,7 +109,7 @@ class PageSiswa extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return const Padding(
                       padding: EdgeInsets.only(bottom: 20),
-                      child: SiswaCard(),
+                      child: SiswaCard(status: Status.lengkap),
                     );
                   },
                 ),
