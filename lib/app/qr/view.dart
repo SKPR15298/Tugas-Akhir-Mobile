@@ -1,16 +1,51 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pressdasi/app/core/colors.dart';
-import '../../core/components/appbar.dart';
+
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import '../../environment/components/appbar.dart';
+import '../../environment/colors.dart';
+import './components/generate_data.dart';
 
 class QrGenerate extends StatefulWidget {
-  const QrGenerate({super.key});
+  const QrGenerate({Key? key}) : super(key: key);
 
   @override
   State<QrGenerate> createState() => _QrGenerateState();
 }
 
 class _QrGenerateState extends State<QrGenerate> {
+  late Timer _timer;
+  String qrData = '';
+
+  @override
+  void initState() {
+    super.initState();
+    qrData = "pds${generateQRData()}";
+
+    _startTimer();
+    _disableCapture();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 20), (timer) {
+      setState(() {
+        qrData = "pds${generateQRData()}";
+      });
+    });
+  }
+
+  void _disableCapture() async {
+    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,13 +58,23 @@ class _QrGenerateState extends State<QrGenerate> {
           ),
           child: Column(
             children: [
-              Container(
-                height: 250,
-                width: Get.width,
-                decoration: const BoxDecoration(
-                  color: greyColor,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
+              Center(
+                child: Container(
+                  height: 250,
+                  width: Get.width,
+                  decoration: BoxDecoration(
+                    color: greyColor.withOpacity(0.3),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: Center(
+                    child: QrImageView(
+                      data: qrData,
+                      version: QrVersions.auto,
+                      size: 200,
+                      gapless: true,
+                    ),
                   ),
                 ),
               ),
@@ -79,24 +124,27 @@ class _QrGenerateState extends State<QrGenerate> {
                           ),
                         ],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
-                        child: RichText(
-                          text: const TextSpan(
-                            children: [
-                              TextSpan(
-                                  text:
-                                      "1. Arahkan QRcode ke scanner yang sudah tersedia di lingkungan sekolah \n",
-                                  style: TextStyle(color: textColor)),
-                              TextSpan(
-                                  text: "2. Tunggu hingga proses berhasil\n",
-                                  style: TextStyle(color: textColor)),
-                              TextSpan(
-                                  text: "3. Proses selesai ",
-                                  style: TextStyle(color: textColor)),
-                            ],
-                          ),
+                      child: const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "1. Arahkan QRcode ke scanner yang sudah tersedia di lingkungan sekolah,",
+                              style: TextStyle(color: textColor, fontSize: 12),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "2. Tunggu hingga proses berhasil, ",
+                              style: TextStyle(color: textColor, fontSize: 12),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "3. Proses selesai. ",
+                              style: TextStyle(color: textColor, fontSize: 12),
+                            ),
+                          ],
                         ),
                       ),
                     ),

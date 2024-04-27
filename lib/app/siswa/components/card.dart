@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
+import '../../../environment/colors.dart';
 
 enum Status { lengkap, kurang, kosong }
 
-class GuruCard extends StatelessWidget {
+class SiswaCard extends StatelessWidget {
   final Status status;
-  const GuruCard({super.key, this.status = Status.kosong});
+  const SiswaCard({super.key, this.status = Status.kosong});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class GuruCard extends StatelessWidget {
           children: [
             const Flexible(
               child: Text(
-                "Sheva Kurnia Pratama Rachman",
+                "11/02/2024",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

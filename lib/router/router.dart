@@ -1,15 +1,20 @@
 import 'package:get/get.dart';
 
 //screens
-import './app/modules/siswa/view.dart';
-import './app/modules/guru/view.dart';
-import './app/modules/home/view.dart';
-import './app/modules/qr/view.dart';
+import '../app/siswa/view.dart';
+import '../app/guru/view.dart';
+import '../app/home/view.dart';
+import '../app/qr/view.dart';
+import '../app/splashscreen/splash.dart';
 
 class AppRoutes {
   static final routes = [
     GetPage(
       name: "/",
+      page: () => const SplashScreen(),
+    ),
+    GetPage(
+      name: "/enter",
       page: () => const PageMain(),
     ),
     GetPage(

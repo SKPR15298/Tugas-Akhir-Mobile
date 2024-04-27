@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import '../colors.dart';
 
 class Sidebar extends StatelessWidget {
@@ -10,25 +11,26 @@ class Sidebar extends StatelessWidget {
     return Drawer(
       child: Column(
         children: <Widget>[
+          Container(
+            height: MediaQuery.of(context).padding.top + 55,
+            decoration: const BoxDecoration(
+              color: blueDarkColor,
+            ),
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+            child: const Center(
+              child: Text(
+                'PRESSDASI: Mobile',
+                style: TextStyle(
+                  color: backgroundColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
-                Container(
-                  height: 55,
-                  decoration: const BoxDecoration(
-                    color: blueDarkColor,
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'PRESSDASI: Mobile',
-                      style: TextStyle(
-                        color: backgroundColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -46,7 +48,7 @@ class Sidebar extends StatelessWidget {
                         color: backgroundColor,
                       ),
                       title: const Text(
-                        'Item 1',
+                        'Home',
                         style: TextStyle(
                           color: backgroundColor,
                           fontWeight: FontWeight.bold,
@@ -84,7 +86,8 @@ class Sidebar extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          Get.offAllNamed("/");
+                          GetStorage().erase();
+                          Get.offAllNamed("/enter");
                         },
                         child: Text(
                           'Ya',

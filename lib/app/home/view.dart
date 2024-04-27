@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pressdasi/app/core/colors.dart';
+import '../../environment/colors.dart';
+import './api/api.dart';
 
 class PageMain extends StatelessWidget {
   const PageMain({super.key});
@@ -47,7 +50,7 @@ class PageMain extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: Get.height * 0.08),
+              SizedBox(height: Get.height * 0.09),
               SizedBox(
                 height: Get.height * 0.4,
                 child: Image.asset(
@@ -106,13 +109,24 @@ class PageMain extends StatelessWidget {
   }
 }
 
-class Verification extends StatelessWidget {
+class Verification extends StatefulWidget {
   const Verification({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController textFieldController = TextEditingController();
+  VerificationState createState() => VerificationState();
+}
 
+class VerificationState extends State<Verification> {
+  final TextEditingController _noindukController = TextEditingController();
+
+  @override
+  void dispose() {
+    _noindukController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         color: backgroundColor,
@@ -160,14 +174,14 @@ class Verification extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: TextField(
-                        controller: textFieldController,
+                        controller: _noindukController,
                         style: const TextStyle(color: textColor),
                         autofocus: true,
                         textInputAction: TextInputAction.go,
                         onSubmitted: (value) {
-                          if (value.trim().toUpperCase() == "G") {
+                          if (value == 'G') {
                             Get.offAllNamed('/guru');
-                          } else if (value.trim().toUpperCase() == "S") {
+                          } else {
                             Get.offAllNamed('/siswa');
                           }
                         },
@@ -210,12 +224,13 @@ class Verification extends StatelessWidget {
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (textFieldController.text.toUpperCase() == "G") {
-                            Get.offAllNamed('/guru');
-                          } else if (textFieldController.text.toUpperCase() ==
-                              "S") {
-                            Get.offAllNamed('/siswa');
+                        onPressed: () async {
+                          final String noinduk = _noindukController.text;
+
+                          try {
+                            await NoInduk().getNoInduk(noinduk);
+                          } catch (e) {
+                            print('Error: $e');
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -226,7 +241,9 @@ class Verification extends StatelessWidget {
                         ),
                         child: const Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
+                            horizontal: 10,
+                            vertical: 15,
+                          ),
                           child: Text(
                             'Lanjut',
                             style: TextStyle(
