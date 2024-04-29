@@ -178,11 +178,13 @@ class VerificationState extends State<Verification> {
                         style: const TextStyle(color: textColor),
                         autofocus: true,
                         textInputAction: TextInputAction.go,
-                        onSubmitted: (value) {
-                          if (value == 'G') {
-                            Get.offAllNamed('/guru');
-                          } else {
-                            Get.offAllNamed('/siswa');
+                        onSubmitted: (value) async {
+                          final String noinduk = _noindukController.text;
+
+                          try {
+                            await NoInduk().getNoInduk(noinduk);
+                          } catch (e) {
+                            print('Error: $e');
                           }
                         },
                         decoration: const InputDecoration(

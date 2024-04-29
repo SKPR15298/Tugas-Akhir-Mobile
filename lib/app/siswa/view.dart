@@ -21,7 +21,7 @@ class PageSiswaState extends State<PageSiswa> {
   @override
   void initState() {
     super.initState();
-    _currentMonth = DateTime(DateTime.now().year, DateTime.now().month - 1);
+    _currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
   }
 
   void _previousMonth() {
@@ -165,7 +165,7 @@ class PageSiswaState extends State<PageSiswa> {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 10,
+                    itemCount: 1,
                     itemBuilder: (context, index) {
                       return const Padding(
                         padding: EdgeInsets.only(bottom: 20),

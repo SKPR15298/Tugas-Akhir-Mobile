@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
@@ -6,9 +8,35 @@ import '../../environment/components/appbar.dart';
 import '../../environment/components/drawer.dart';
 import './components/card.dart';
 import '../../environment/colors.dart';
+import './api/api.dart';
 
-class PageGuru extends StatelessWidget {
+class PageGuru extends StatefulWidget {
   const PageGuru({super.key});
+
+  @override
+  PageGuruState createState() => PageGuruState();
+}
+
+class PageGuruState extends State<PageGuru> {
+  Map<String, dynamic> userData = {};
+
+  Future<void> _fetchData() async {
+    try {
+      Map<String, dynamic>? fetchedData = await DataFetch.fetchUser();
+      print("fetch data: $fetchedData");
+      setState(() {
+        userData = fetchedData!;
+      });
+    } catch (e) {
+      print("Error: Failed to fetch user data - $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +48,7 @@ class PageGuru extends StatelessWidget {
         title: "Ruang Kelas",
         tailing: true,
       ),
-      endDrawer: const Sidebar(),
+      endDrawer: const Sidebar(isGuru: true),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -29,7 +57,7 @@ class PageGuru extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Amin Machmudi",
+                  '<Nama>',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

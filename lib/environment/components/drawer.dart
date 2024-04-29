@@ -4,7 +4,12 @@ import 'package:get_storage/get_storage.dart';
 import '../colors.dart';
 
 class Sidebar extends StatelessWidget {
-  const Sidebar({super.key});
+  final bool isGuru;
+
+  const Sidebar({
+    super.key,
+    this.isGuru = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +63,34 @@ class Sidebar extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (isGuru == true) // Corrected the conditional statement
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 0,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: ListTile(
+                        autofocus: true,
+                        leading: const Icon(
+                          Icons.file_download,
+                          color: textColor,
+                        ),
+                        title: const Text(
+                          'Laporan',
+                          style: TextStyle(
+                            color: textColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onTap: () {},
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
