@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import '../../environment/components/appbar.dart';
@@ -22,8 +21,7 @@ class _QrGenerateState extends State<QrGenerate> {
   @override
   void initState() {
     super.initState();
-    qrData = "pds${generateQRData()}";
-
+    _updateQRData();
     _startTimer();
     _disableCapture();
   }
@@ -36,14 +34,20 @@ class _QrGenerateState extends State<QrGenerate> {
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 20), (timer) {
-      setState(() {
-        qrData = "pds${generateQRData()}";
-      });
+      _updateQRData();
     });
   }
 
   void _disableCapture() async {
     await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+  }
+
+  void _updateQRData() {
+    // Get user's current location (You need to implement this part)
+    double userLatitude = 0.0;
+    double userLongitude = 0.0;
+    qrData = generateQRData(userLatitude, userLongitude);
+    setState(() {});
   }
 
   @override

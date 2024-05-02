@@ -5,7 +5,9 @@ enum Status { lengkap, kurang, kosong }
 
 class GuruCard extends StatelessWidget {
   final Status status;
-  const GuruCard({super.key, this.status = Status.kosong});
+  final String namaSiswa;
+  const GuruCard(
+      {super.key, this.status = Status.kosong, required this.namaSiswa});
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +46,10 @@ class GuruCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Flexible(
+            Flexible(
               child: Text(
-                "Sheva Kurnia Pratama Rachman",
-                style: TextStyle(
+                namaSiswa,
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),

@@ -5,7 +5,9 @@ enum Status { lengkap, kurang, kosong }
 
 class SiswaCard extends StatelessWidget {
   final Status status;
-  const SiswaCard({super.key, this.status = Status.kosong});
+  final String tanggal;
+  const SiswaCard(
+      {super.key, this.status = Status.kosong, required this.tanggal});
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +46,10 @@ class SiswaCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Flexible(
+            Flexible(
               child: Text(
-                "11/02/2024",
-                style: TextStyle(
+                tanggal,
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),

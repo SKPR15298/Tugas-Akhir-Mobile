@@ -63,7 +63,7 @@ class Sidebar extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (isGuru == true) // Corrected the conditional statement
+                if (isGuru == true)
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
