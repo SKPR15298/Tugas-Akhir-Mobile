@@ -192,7 +192,7 @@ class VerificationState extends State<Verification> {
                             Icons.account_circle_outlined,
                             color: Colors.black54,
                           ),
-                          hintText: 'Nomor Identifikasi',
+                          hintText: 'Masukkan NISN/NIP(Guru)',
                           hintStyle: TextStyle(
                             color: greyColor,
                             fontSize: 14,

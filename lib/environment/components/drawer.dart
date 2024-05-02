@@ -1,15 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import '../colors.dart';
+import '../../app/guru/api/api.dart';
 
 class Sidebar extends StatelessWidget {
   final bool isGuru;
 
   const Sidebar({
-    super.key,
+    Key? key,
     this.isGuru = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +91,9 @@ class Sidebar extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          _showMonthSelector(context);
+                        },
                       ),
                     ),
                   ),
@@ -142,5 +148,105 @@ class Sidebar extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _showMonthSelector(BuildContext context) async {
+    DateTime selectedDate = DateTime.now();
+    DateTime displayedMonth = selectedDate;
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(
+                '${_getMonthName(displayedMonth.month)} ${displayedMonth.year}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        setState(() {
+                          displayedMonth = DateTime(
+                              displayedMonth.year, displayedMonth.month - 1);
+                        });
+                      },
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        DateTime startDate = DateTime(
+                            displayedMonth.year, displayedMonth.month, 1);
+                        DateTime endDate = DateTime(
+                            displayedMonth.year, displayedMonth.month + 1, 0);
+
+                        // Format startDate and endDate
+                        String formattedStartDate =
+                            DateFormat('yyyyMMdd').format(startDate);
+                        String formattedEndDate =
+                            DateFormat('yyyyMMdd').format(endDate);
+
+                        File? jadwalFile = await DataFetch.fetchJadwal(
+                            formattedStartDate, formattedEndDate);
+                        if (jadwalFile != null) {
+                        } else {}
+                      },
+                      child: const Text('Unduh'),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.arrow_forward),
+                      onPressed: () {
+                        setState(() {
+                          displayedMonth = DateTime(
+                              displayedMonth.year, displayedMonth.month + 1);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    print(
+        'Selected month: ${_getMonthName(selectedDate.month)} ${selectedDate.year}');
+  }
+
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'Januari';
+      case 2:
+        return 'Februari';
+      case 3:
+        return 'Maret';
+      case 4:
+        return 'April';
+      case 5:
+        return 'Mei';
+      case 6:
+        return 'Juni';
+      case 7:
+        return 'Juli';
+      case 8:
+        return 'Agustus';
+      case 9:
+        return 'September';
+      case 10:
+        return 'Oktober';
+      case 11:
+        return 'November';
+      case 12:
+        return 'Desember';
+      default:
+        return '';
+    }
   }
 }

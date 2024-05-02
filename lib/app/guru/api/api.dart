@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 import '../../../environment/environment.dart';
 
@@ -114,6 +116,45 @@ class DataFetch {
       }
     } catch (e) {
       print("Error fetching absen: $e");
+      return null;
+    }
+  }
+
+  Future<String> getDocumentsDirectory() async {
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    return appDocumentsDirectory.path;
+  }
+
+  static Future<File?> fetchJadwal(String tanggal1, String tanggal2) async {
+    try {
+      String? uuid = await getUUID();
+      if (uuid != null) {
+        final response = await http.get(Uri.parse(
+            '${AppConfig.baseUrl}/api/v1/laporan/$uuid/export-with-date?tanggal1=$tanggal1&tanggal2=$tanggal2'));
+
+        if (response.statusCode == 200) {
+          print("Response body: ${response.body}");
+          print("Response headers: ${response.headers}");
+
+          String? contentDisposition = response.headers['content-disposition'];
+          print("Content-Disposition header: $contentDisposition");
+          List<int> bytes = response.bodyBytes;
+          Directory appDocumentsDirectory =
+              await getApplicationDocumentsDirectory();
+          String filePath = '${appDocumentsDirectory.path}/file.xlsx';
+          File file = File(filePath);
+          await file.writeAsBytes(bytes);
+          return file;
+        } else {
+          print("Error: ${response.statusCode} - ${response.body}");
+          return null;
+        }
+      } else {
+        print("UUID not found in SharedPreferences");
+        return null;
+      }
+    } catch (e) {
+      print("Error: $e");
       return null;
     }
   }

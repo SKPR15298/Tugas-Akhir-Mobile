@@ -1,5 +1,15 @@
+// ignore_for_file: avoid_print
+
 import 'dart:math' as math;
+import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<String?> getStoredUUID() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? uuid = prefs.getString('uuid');
+  return uuid;
+}
 
 String generateRandomString(int length) {
   const charset = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -8,38 +18,37 @@ String generateRandomString(int length) {
       .join('');
 }
 
-String generateQRData(double userLatitude, double userLongitude) {
-  double centerLatitude = -7.913602;
-  double centerLongitude = 112.640491;
-  double radiusInMeters = 100.0;
+Future<String> generateQRData(
+    {required String masuk, required String pulang}) async {
+  String randomString = generateRandomString(5);
+  String timestamp = DateFormat('dd/MM/yyHHmmss').format(DateTime.now());
+  String? uuid = await getStoredUUID();
 
-  if (isWithinCircularArea(userLatitude, userLongitude, centerLatitude,
-      centerLongitude, radiusInMeters)) {
-    String randomString = generateRandomString(15);
-    String timestamp = DateFormat('dd/MM/yyHHmmss').format(DateTime.now());
-    return '$randomString-$timestamp';
+  String status = getStatus(masuk, pulang);
+
+  Map<String, dynamic> qrData = {
+    'status': status,
+    'uuid': uuid,
+    'time': timestamp,
+    'random': randomString
+  };
+
+  String jsonString = jsonEncode(qrData);
+  print(jsonString);
+  return jsonString;
+}
+
+String getStatus(String masuk, String pulang) {
+  DateTime now = DateTime.now();
+  DateFormat formatter = DateFormat('HH:mm:ss');
+  DateTime parsedMasukTime = formatter.parse(masuk);
+  DateTime parsedPulangTime = formatter.parse(pulang);
+
+  if (now.isBefore(parsedMasukTime)) {
+    return 'masuk';
+  } else if (now.isAfter(parsedPulangTime)) {
+    return 'pulang';
   } else {
     return '';
   }
-}
-
-bool isWithinCircularArea(double userLatitude, double userLongitude,
-    double centerLatitude, double centerLongitude, double radiusInMeters) {
-  double distance = calculateDistance(
-      userLatitude, userLongitude, centerLatitude, centerLongitude);
-  return distance <= radiusInMeters;
-}
-
-double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-  const double earthRadius = 6371000;
-  double dLat = (lat2 - lat1) * (math.pi / 180);
-  double dLon = (lon2 - lon1) * (math.pi / 180);
-  double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
-      math.cos(lat1 * (math.pi / 180)) *
-          math.cos(lat2 * (math.pi / 180)) *
-          math.sin(dLon / 2) *
-          math.sin(dLon / 2);
-  double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
-  double distance = earthRadius * c;
-  return distance;
 }

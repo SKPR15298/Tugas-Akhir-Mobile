@@ -1,5 +1,5 @@
 class AppConfig {
-  static const String baseUrlDevelopment = 'http://10.222.12.75:8000';
+  static const String baseUrlDevelopment = 'http://1.1.1.7:8000';
 
   static String get baseUrl {
     return baseUrlDevelopment;

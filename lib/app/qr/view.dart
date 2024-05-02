@@ -1,11 +1,17 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pressdasi/app/guru/api/api.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+// import 'package:geolocator/geolocator.dart';
+// import 'package:permission_handler/permission_handler.dart';
 import '../../environment/components/appbar.dart';
 import '../../environment/colors.dart';
 import './components/generate_data.dart';
+import './api/api.dart';
 
 class QrGenerate extends StatefulWidget {
   const QrGenerate({Key? key}) : super(key: key);
@@ -15,15 +21,33 @@ class QrGenerate extends StatefulWidget {
 }
 
 class _QrGenerateState extends State<QrGenerate> {
+  Map<String, dynamic>? jadwalAbsen;
   late Timer _timer;
+  bool isLoading = true;
   String qrData = '';
+  // Position? currentPosition;
+  // final double fixedLatitude = -7.913710;
+  // final double fixedLongitude = 112.640610;
 
   @override
   void initState() {
     super.initState();
-    _updateQRData();
+    // _requestLocationPermission();
     _startTimer();
     _disableCapture();
+    _fetchJadwal();
+  }
+
+  Future<void> _fetchJadwal() async {
+    try {
+      final fetchedAbsen = await AbsenFetch.fetchJadwal();
+      setState(() {
+        jadwalAbsen = fetchedAbsen;
+      });
+      print("ini jadwal :$jadwalAbsen");
+    } catch (e) {
+      print("Error fetching absen: $e");
+    }
   }
 
   @override
@@ -42,13 +66,54 @@ class _QrGenerateState extends State<QrGenerate> {
     await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   }
 
-  void _updateQRData() {
-    // Get user's current location (You need to implement this part)
-    double userLatitude = 0.0;
-    double userLongitude = 0.0;
-    qrData = generateQRData(userLatitude, userLongitude);
-    setState(() {});
+  Future<void> _updateQRData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      if (jadwalAbsen != null && jadwalAbsen!.containsKey('data')) {
+        String masukTime = jadwalAbsen!['data']['masuk'];
+        String pulangTime = jadwalAbsen!['data']['pulang'];
+        print("ini masuk: $masukTime");
+        print("ini pulang: $pulangTime");
+        qrData = await generateQRData(masuk: masukTime, pulang: pulangTime);
+      } else {
+        print('Jadwal Absen not available or invalid format.');
+      }
+    } catch (e) {
+      print('Error generating QR data: $e');
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
+
+  // bool _isValidLocation(Position position) {
+  //   double latitude = position.latitude;
+  //   double longitude = position.longitude;
+  //   double distance = Geolocator.distanceBetween(
+  //       latitude, longitude, fixedLatitude, fixedLongitude);
+  //   return distance <= 125;
+  // }
+
+  // void _requestLocationPermission() async {
+  //   PermissionStatus permission = await Permission.location.request();
+  //   if (permission.isGranted) {
+  //     try {
+  //       Position position = await Geolocator.getCurrentPosition(
+  //           desiredAccuracy: LocationAccuracy.high);
+  //       setState(() {
+  //         currentPosition = position;
+  //       });
+  //     } catch (e) {
+  //       print('Error getting location: $e');
+  //     }
+  //   } else {
+  //     print('Location permission denied');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +138,14 @@ class _QrGenerateState extends State<QrGenerate> {
                     ),
                   ),
                   child: Center(
-                    child: QrImageView(
-                      data: qrData,
-                      version: QrVersions.auto,
-                      size: 200,
-                      gapless: true,
-                    ),
+                    child: isLoading
+                        ? CircularProgressIndicator() // Show loading indicator while QR code is being generated
+                        : QrImageView(
+                            data: qrData,
+                            version: QrVersions.auto,
+                            size: 200,
+                            gapless: true,
+                          ),
                   ),
                 ),
               ),
