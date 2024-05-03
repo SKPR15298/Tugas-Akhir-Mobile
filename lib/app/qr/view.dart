@@ -3,7 +3,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pressdasi/app/guru/api/api.dart';
+// import 'package:pressdasi/app/guru/api/api.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 // import 'package:geolocator/geolocator.dart';
