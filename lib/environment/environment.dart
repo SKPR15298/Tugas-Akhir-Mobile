@@ -1,5 +1,6 @@
 class AppConfig {
-  static const String baseUrlDevelopment = 'http://localhost:8000';
+  static const String baseUrlDevelopment =
+      'https://pressdasi-api.inoker-connect.com';
 
   static String get baseUrl {
     return baseUrlDevelopment;
